@@ -1,0 +1,15 @@
+# Environment variables
+.env
+
+# Virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Vector database
+chroma_db/
+
+# macOS
+.DS_Store

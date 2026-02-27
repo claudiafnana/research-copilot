@@ -1,0 +1,37 @@
+{
+  "papers": [
+    {
+      "id": "paper_001",
+      "title": "Agroecología E Innovación Social Como Alternativa De Desarrollo Territorial",
+      "authors": ["Lopez, L."],
+      "year": 2021,
+      "venue": "Universidad Cooperativa de Colombia",
+      "doi": "",
+      "filename": "agroecologia_e_innovacion.pdf",
+      "topics": ["agroecología", "innovación social", "desarrollo territorial"],
+      "abstract": "..."
+    },
+    {
+      "id": "paper_002",
+      "title": "Aprendizaje y agroecología ...",
+      "authors": ["..."],
+      "year": 202X,
+      "venue": "...",
+      "doi": "",
+      "filename": "aprendizaje_agroecologia.pdf",
+      "topics": ["..."],
+      "abstract": "..."
+    },
+    {
+      "id": "paper_003",
+      "title": "Economía y agroecología ...",
+      "authors": ["..."],
+      "year": 202X,
+      "venue": "...",
+      "doi": "",
+      "filename": "economia_y_agroecologia.pdf",
+      "topics": ["..."],
+      "abstract": "..."
+    }
+  ]
+}
