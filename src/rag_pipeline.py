@@ -1,30 +1,46 @@
 from src.ingestion.pdf_extractor import extract_text_from_pdf
 from src.ingestion.text_cleaner import clean_extracted_text
 from src.chunking.chunker import TokenChunker
+from src.embedding.embedder import OpenAIEmbedder
+from src.vectorstore.chroma_store import ChromaVectorStore
 
 
 if __name__ == "__main__":
-    result = extract_text_from_pdf("papers/agroecologia_e_innovacion.pdf")
+    pdf_path = "papers/agroecologia_e_innovacion.pdf"
+
+    print("📄 Extrayendo PDF...")
+    result = extract_text_from_pdf(pdf_path)
     cleaned = clean_extracted_text(result["text"])
 
-    # Configuración 1: chunks pequeños
-    chunker_small = TokenChunker(chunk_size=256, chunk_overlap=25)
-    chunks_small = chunker_small.chunk_text(
-        cleaned,
-        metadata={"paper_id": "paper_001"}
-    )
+    print("Chunking...")
+    chunker = TokenChunker(chunk_size=256, chunk_overlap=25)
+    chunks = chunker.chunk_text(cleaned, metadata={"paper_id": "paper_001"})
 
-    # Configuración 2: chunks grandes
-    chunker_large = TokenChunker(chunk_size=1024, chunk_overlap=100)
-    chunks_large = chunker_large.chunk_text(
-        cleaned,
-        metadata={"paper_id": "paper_001"}
-    )
+    test_chunks = chunks[:3]
 
-    print("Total páginas:", result["total_pages"])
-    print("Chunks SMALL (256 tokens):", len(chunks_small))
-    print("Chunks LARGE (1024 tokens):", len(chunks_large))
+    texts = [c["text"] for c in test_chunks]
+    ids = [f"paper_001_chunk_{i}" for i in range(len(test_chunks))]
+    metadatas = [c["metadata"] for c in test_chunks]
 
-    print("\n--- Ejemplo chunk SMALL ---\n")
-    print(chunks_small[0]["text"][:400])
-    print("\nTokens en ese chunk:", chunks_small[0]["token_count"])
+    print("Generando embeddings...")
+    embedder = OpenAIEmbedder()
+    embeddings = embedder.embed_texts(texts)
+
+    print("Guardando en Chroma...")
+    store = ChromaVectorStore(persist_directory="./chroma_db")
+    store.create_collection("papers_test")
+    store.add_documents(ids, texts, embeddings, metadatas)
+
+    print("Probando búsqueda...")
+    query_embedding = embedder.embed_query("¿Qué es el desarrollo territorial?")
+    results = store.query(query_embedding, n_results=2)
+
+    print("\nResultados encontrados:\n")
+    for doc, meta, dist in zip(
+        results["documents"][0],
+        results["metadatas"][0],
+        results["distances"][0]
+    ):
+        print("Distancia:", dist)
+        print(doc[:300])
+        print("----")
