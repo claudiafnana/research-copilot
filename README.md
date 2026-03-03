@@ -233,3 +233,9 @@ The evaluation script ran all 4 strategies against 20 questions (80 total GPT ca
 ## Papers corpus
 
 20 peer-reviewed papers on agroecology (2020–2026), including works from *Agronomy for Sustainable Development*, *Sustainability*, *Global Environmental Change*, and *Agroecology and Sustainable Food Systems*. Full list in `papers/papers_manifest.json`.
+
+## Demo Video
+
+Watch the 5 minute demo here:
+
+[▶️ Watch the Demo](https://youtu.be/DZgeh1k7cdY)
